@@ -1,0 +1,35 @@
+# expense_tracker.py
+import csv
+from datetime import datetime
+
+FILE = "expenses.csv"
+
+def add_expense(amount, category, description=""):
+    with open(FILE, "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([datetime.now().strftime("%Y-%m-%d"), amount, category, description])
+    print("✅ Expense added!")
+
+def view_expenses():
+    with open(FILE, "r") as f:
+        reader = csv.reader(f)
+        total = 0
+        print("\nDate\t\tAmount\tCategory\tDescription")
+        for row in reader:
+            if row:
+                print(f"{row[0]}\t${row[1]}\t{row[2]}\t{row[3]}")
+                total += float(row[1])
+        print(f"\nTotal spent: ${total:.2f}")
+
+if __name__ == "__main__":
+    while True:
+        choice = input("\n1. Add Expense\n2. View Expenses\n3. Exit\n> ")
+        if choice == "1":
+            amt = input("Amount: ")
+            cat = input("Category: ")
+            desc = input("Description: ")
+            add_expense(amt, cat, desc)
+        elif choice == "2":
+            view_expenses()
+        else:
+            break
